@@ -48,17 +48,27 @@ country(newyork,usa).
 country(chicago,usa).
 
 %part1_question1
+% List all airports where X (input) is a country and L is a list of all airports in that country.
+
 list_airport(X, L) :- findall(Y, country(Y, X), L).
 
 %question2
+% a predicate to show the connections from city X to city Y (one by one)
+
 trip(X,Y,P) :-  fly(X,Y,[],P).
 fly(X,Y,V,[X,Y]) :- flight(X,Y,_,_,_,_), not(member(Y,V)).
 fly(X,Y,V,[X|P]) :- flight(X,R,_,_,_,_), not(member(R,V)), fly(R,Y,[X|V],P).
 
 %question3
+% a predicate that returns all the connections (trips) from X to Y and place them in T. Therefore T 
+is a list of lists
+
 all_trip(X,Y,T):- findall(P, trip(X,Y,P), T).
 
 %question4
+% the predicate returns the distance D for each trip T from city X and Y (one by one). Note that the 
+output is a list with first element the trip (which is a list) and second element the numeric distance. 
+
 trip_dist(Dep,Arr,[Route,Dist]) :-  
 	fly(Dep,Arr,[],Route,0,Dist).
 fly(Dep,Arr,V,[Dep,Arr],AccDist,FinalDist) :- 
@@ -72,6 +82,8 @@ fly(Dep,Arr,V,[Dep|Route], AccDist, FinalDist) :-
 	fly(R,Arr,[Dep|V],Route, NewDist, FinalDist).
 
 %question5
+% same as trip_dist but C is the total cost of the trip
+
 trip_cost(Dep,Arr,[Route,Cost]) :-  
 	fly2(Dep,Arr,[],Route,0,Cost).
 fly2(Dep,Arr,V,[Dep,Arr],AccCost,FinalCost) :- 
@@ -85,15 +97,21 @@ fly2(Dep,Arr,V,[Dep|Route], AccCost, FinalCost) :-
 	fly2(R,Arr,[Dep|V],Route, NewCost, FinalCost).
 	
 %question6
+% same as trip_dist but I is the total number of airplanes changed (=0 for direct connections). 
+
 trip_change(X,Y,[P,I]) :-  fly(X,Y,[],P), length(P,L), I is L-2 .
 
 %question7
+% same as all_trip, but DISCARD all the trip containing a flight with airline A (for instance the customer would like to flight from rome to dublin avoiding ryanair) 
+
 noairline(X,Y,T,R) :- fly_noairline(X,Y,[],T,R).
 fly_noairline(X,Y,T,[X,Y],R) :- flight(X,Y,S,_,_,_), not(member(Y,T)), S\=R.
 fly_noairline(X,Y,T,[X|C],R) :- flight(X,A,S,_,_,_), not(member(A,T)), fly_noairline(A,Y,[X|T],C,R), S\=R.
 alltrip_noairline(X,Y,T,R) :- findall(A, noairline(X,Y,A,R),T).
 
 %question8
+% finding the cheapest, shortest, fastest trip T from city X to city Y. C is the cost, distance or time. 
+
 shortest(Dep,Arr,Route,LowestDist) :- findall(Dist, trip_dist(Dep,Arr,[_,Dist]), List), 
 									min_list(List,LowestDist), 
 									trip_dist(Dep,Arr,[Route,LowestDist]).
@@ -120,6 +138,8 @@ fastest(Dep,Arr,Route,Fastest) :- findall(Time, trip_time(Dep,Arr,[_,Time]), Lis
 								  trip_time(Dep,Arr,[Route,Fastest]).
 
 %question9
+% showing all the connections from airport X to country Y (one by one)
+
 trip_to_nation(X,Y,T) :-
 			country(W,Y),
 			trip(X,W,T),
