@@ -1,6 +1,9 @@
-% The following knowledge base contains information about flights. For each flight there is a prolog predicate flight(city-a,city-b,airline,distance,time,cost) meaning that there 
-is a flight from A to B with a specific Airline, the distance between A and B, the flight time and the flight cost. The time is expressed in minutes, distance in km, price in euros. You have also information about 
-the location of each city in the predicate country(city,state).
+% The following knowledge base contains information about flights. For each flight there is a prolog predicate 
+% flight(city-a,city-b,airline,distance,time,cost) meaning that there is a flight from A to B with a specific Airline, 
+% the distance between A and B, the flight time and the flight cost. The time is expressed in minutes, distance in km, 
+% price in euros. You have also information about the location of each city in the predicate country(city,state).
+
+% The assignment is to write predicates for this knowlege base, listed below
 
 flight(london,dublin,aerlingus,500,45,150).
 flight(rome,london,ba,1500,150,400).
