@@ -74,7 +74,7 @@ all_trip(X,Y,T):- findall(P, trip(X,Y,P), T).
 
 %question4
 % the predicate returns the distance D for each trip T from city X and Y (one by one). Note that the 
-output is a list with first element the trip (which is a list) and second element the numeric distance. 
+% output is a list with first element the trip (which is a list) and second element the numeric distance. 
 
 trip_dist(Dep,Arr,[Route,Dist]) :-  
 	fly(Dep,Arr,[],Route,0,Dist).
